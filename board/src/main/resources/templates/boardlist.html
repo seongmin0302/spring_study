@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 리스트 페이지</title>
+</head>
+
+<style>
+    .layout {
+        width: 500px;
+        margin: 0 auto;
+        margin-top: 40px;
+    }
+
+</style>
+
+<body>
+
+    <div class="layout">
+        <table>
+            <thead>
+                <tr>
+                    <th>글번호</th>     <!--웹사이트에서 맨위 굵은 글씨 글번호가 된다.-->
+                    <th>제목</th>       <!--웹사이트에서 맨위 굵은 글씨 제목이 된다.-->
+                </tr>
+            </thead>
+            <tbody>     <!--받아온 데이터들을 출력해주기 위해서!-->
+                <tr th:each="board : ${list}">
+                    <td th:text="${board.id}">1</td>
+                    <td>                                     <!--   /board/view?id=7    -->
+                        <a th:text="${board.title}" th:href="@{/board/view(id=${board.id})}">제목입니다.</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- nowPage: 현재 페이지-->
+        <!-- startPage: 블럭에서 보여줄 시작 페이지-->
+        <!-- endPage: 블럭에서 보여줄 마지막 페이지-->
+        <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">  <!--  th:each문에서 숫자를 이용한 반복문은 #numbers.sequence(시작 번호, 끝번호)를 넣어줘야 합니다! -->
+            <a th:if="${page != nowPage}" th:href="@{/board/list(page = ${page - 1})}" th:text="${page}"></a>
+            <strong th:if="${page == nowPage}" th:text="${page}" style="color: red"></strong>
+        </th:block>
+    </div>
+
+</body>
+</html>
